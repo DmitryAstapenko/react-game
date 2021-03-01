@@ -1,0 +1,4 @@
+.bomb-field{
+  grid-area: field;
+  display: grid;  
+}
