@@ -1,0 +1,8 @@
+.game{
+  display: grid;
+  grid-template-areas: 
+    'header header header header header'
+    'field field field field field'
+    'field field field field field'
+    'field field field field field';
+}
