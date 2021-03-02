@@ -1,4 +1,4 @@
-import { ICell, ModeCell, ICoordinates, ValueCell } from '../cell/cell-service';
+import { ICell, ModeCell, ICoordinates, ValueCell, BOMB } from '../cell/cell-service';
 import { AppService } from '../../app-service';
 
 export class GameService {
@@ -8,7 +8,7 @@ export class GameService {
     GameService.cells = GameService.createEmptyCells(width, height);
     const bombCoordinates: ICoordinates[] = GameService.getCoordinatesBombs(width, height, countBombs);
 
-    bombCoordinates.forEach((coordinates) => GameService.cells[coordinates.x][coordinates.y].value = '#');
+    bombCoordinates.forEach((coordinates) => GameService.cells[coordinates.x][coordinates.y].value = BOMB);
     GameService.placeNumbersOnField();
 
     return GameService.cells;
@@ -59,7 +59,7 @@ export class GameService {
   private static placeNumbersOnField() {
     for (let i = 0; i < GameService.cells.length; i++) {
       for (let j = 0; j < GameService.cells[i].length; j++) {
-        if (GameService.cells[i][j].value !== '#') {
+        if (GameService.cells[i][j].value !== BOMB) {
           GameService.cells[i][j].value = GameService.countBombs(GameService.cells[i][j].coordinates)
         }
       }
@@ -70,21 +70,21 @@ export class GameService {
     let count: number = 0;
 
     if (GameService.cells[coordinates.y - 1] && 
-      GameService.cells[coordinates.y - 1][coordinates.x]?.value === '#') count += 1;
+      GameService.cells[coordinates.y - 1][coordinates.x]?.value === BOMB) count += 1;
     if (GameService.cells[coordinates.y + 1] && 
-      GameService.cells[coordinates.y + 1][coordinates.x]?.value === '#') count += 1;
+      GameService.cells[coordinates.y + 1][coordinates.x]?.value === BOMB) count += 1;
     if (GameService.cells[coordinates.y] && 
-      GameService.cells[coordinates.y][coordinates.x - 1]?.value === '#') count += 1;
+      GameService.cells[coordinates.y][coordinates.x - 1]?.value === BOMB) count += 1;
     if (GameService.cells[coordinates.y] && 
-      GameService.cells[coordinates.y][coordinates.x + 1]?.value === '#') count += 1;
+      GameService.cells[coordinates.y][coordinates.x + 1]?.value === BOMB) count += 1;
     if (GameService.cells[coordinates.y + 1] && 
-      GameService.cells[coordinates.y + 1][coordinates.x + 1]?.value === '#') count += 1;
+      GameService.cells[coordinates.y + 1][coordinates.x + 1]?.value === BOMB) count += 1;
     if (GameService.cells[coordinates.y + 1] && 
-      GameService.cells[coordinates.y + 1][coordinates.x - 1]?.value === '#') count += 1;
+      GameService.cells[coordinates.y + 1][coordinates.x - 1]?.value === BOMB) count += 1;
     if (GameService.cells[coordinates.y - 1] && 
-      GameService.cells[coordinates.y - 1][coordinates.x + 1]?.value === '#') count += 1;
+      GameService.cells[coordinates.y - 1][coordinates.x + 1]?.value === BOMB) count += 1;
     if (GameService.cells[coordinates.y - 1] && 
-      GameService.cells[coordinates.y - 1][coordinates.x - 1]?.value === '#') count += 1;
+      GameService.cells[coordinates.y - 1][coordinates.x - 1]?.value === BOMB) count += 1;
 
     return count;
   }
