@@ -9,8 +9,10 @@ export interface ICoordinates {
   y: number
 }
 
+export type ValueCell = number | '#';
+
 export interface ICell {
   mode: ModeCell,
   coordinates: ICoordinates,
-  value: '' | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | '#'
+  value: ValueCell
 }
