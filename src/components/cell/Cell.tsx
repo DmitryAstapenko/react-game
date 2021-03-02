@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ModeCell, ValueCell, ICoordinates } from './cell-service'
+import { ModeCell, ValueCell, ICoordinates, FLAG } from './cell-service'
 import './Cell.css';
 
 export interface ICellProps {
@@ -30,11 +30,13 @@ export default class Cell extends React.Component<ICellProps, ICellState> {
       <div 
         className="cell" 
         data-mode={mode} 
-        onClick={() => onClick(coordinates)}
+        onClick={(event) => onClick(event, coordinates)}
+        onContextMenu={(event) => onClick(event, coordinates)}
       >
-        <span className="cell__value" data-value={value}>
-          {value === 0 ? '' : value}
-        </span>
+        {mode === ModeCell.Mark
+          ? <span className="cell__value" data-value={value}>{FLAG}</span>
+          : <span className="cell__value" data-value={value}>{value === 0 ? '' : value}</span>
+        }              
       </div>
     );
   }

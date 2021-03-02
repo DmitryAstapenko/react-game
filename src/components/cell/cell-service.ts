@@ -4,7 +4,7 @@ export const FLAG = '⚑';
 export enum ModeCell {
   Open = 'OPEN',
   Close = 'CLOSE',
-  Check = 'CHECK'
+  Mark = 'MARK'
 }
 
 export interface ICoordinates {

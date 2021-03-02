@@ -7,8 +7,8 @@ import './Game.css';
 export interface IGameProps {
 }
 
-export interface IGameState {  
-  cells: ICell[][],  
+export interface IGameState {
+  cells: ICell[][],
 }
 
 export default class Game extends React.Component<IGameProps, IGameState> {
@@ -19,28 +19,39 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   constructor(props: IGameProps) {
     super(props);
 
-    this.state = {      
+    this.state = {
       cells: GameService.createNewField(this.fieldWidth, this.fieldHeight, this.countBombs)
     }
 
     this.handleClickCell = this.handleClickCell.bind(this);
   }
 
-  private handleClickCell(coordinates: ICoordinates): void {    
-    this.openCell(coordinates);    
+  private handleClickCell(event: MouseEvent, coordinates: ICoordinates): void {
+    event.preventDefault();
+
+    const typeEvent = event.type;
+
+    if (typeEvent === 'click' && this.state.cells[coordinates.y][coordinates.x].mode !== ModeCell.Mark) {
+      this.changeModeCell(coordinates, ModeCell.Open);
+    } else if (typeEvent === 'contextmenu' && this.state.cells[coordinates.y][coordinates.x].mode !== ModeCell.Open) {
+      this.state.cells[coordinates.y][coordinates.x].mode === ModeCell.Close
+        ? this.changeModeCell(coordinates, ModeCell.Mark)
+        : this.changeModeCell(coordinates, ModeCell.Close);
+    }
   }
 
-  private openCell(coordinates: ICoordinates) {
-    this.setState((state: IGameState) => {      
-      state.cells[coordinates.y][coordinates.x].mode = ModeCell.Open;
+  private changeModeCell(coordinates: ICoordinates, modeCell: ModeCell) {
+    this.setState((state: IGameState) => {
+      state.cells[coordinates.y][coordinates.x].mode = modeCell;
       return { cells: state.cells };
     });
+    console.log(modeCell);
   }
 
   public render() {
     return (
       <div className="game">
-        <BombField 
+        <BombField
           width={this.fieldWidth}
           height={this.fieldHeight}
           cells={this.state.cells}

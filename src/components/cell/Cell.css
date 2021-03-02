@@ -17,11 +17,11 @@
   background-color: white;
 }
 
-.cell[data-mode='CLOSE'] {
+.cell[data-mode='CLOSE'], .cell[data-mode='MARK'] {
   background-color: rgb(161, 161, 161);
 }
 
-.cell[data-mode='OPEN'] > .cell__value {
+.cell[data-mode='OPEN'] > .cell__value, .cell[data-mode='MARK'] > .cell__value {  
   opacity: 1;
 }
 
@@ -43,34 +43,34 @@
   font-weight: 900;
 }
 
-.cell__value[data-value='1'] {
+.cell[data-mode='OPEN'] > .cell__value[data-value='1'] {
   color: blue;  
 }
 
-.cell__value[data-value='2'] {
+.cell[data-mode='OPEN'] > .cell__value[data-value='2'] {
   color: green;  
 }
 
-.cell__value[data-value='3'] {
+.cell[data-mode='OPEN'] > .cell__value[data-value='3'] {
   color: red;  
 }
 
-.cell__value[data-value='4'] {
+.cell[data-mode='OPEN'] > .cell__value[data-value='4'] {
   color: darkblue;  
 }
 
-.cell__value[data-value='5'] {
+.cell[data-mode='OPEN'] > .cell__value[data-value='5'] {
   color: darkred;  
 }
 
-.cell__value[data-value='6'] {
+.cell[data-mode='OPEN'] > .cell__value[data-value='6'] {
   color: darkgreen;  
 }
 
-.cell__value[data-value='7'] {
+.cell[data-mode='OPEN'] > .cell__value[data-value='7'] {
   color: blueviolet;  
 }
 
-.cell__value[data-value='8'] {
+.cell[data-mode='OPEN'] > .cell__value[data-value='8'] {
   color: black;  
 }
