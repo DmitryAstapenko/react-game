@@ -12,9 +12,9 @@ export interface IGameState {
 }
 
 export default class Game extends React.Component<IGameProps, IGameState> {
-  private fieldWidth: number = 100;
-  private fieldHeight: number = 100;
-  private countBombs: number = 1000;
+  private fieldWidth: number = 20;
+  private fieldHeight: number = 20;
+  private countBombs: number = 50;
 
   constructor(props: IGameProps) {
     super(props);
