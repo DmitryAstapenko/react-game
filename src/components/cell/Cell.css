@@ -12,6 +12,11 @@
   background-color: white;
 }
 
+.cell[data-mode='OPEN']:hover {
+  cursor: default;  
+  background-color: white;
+}
+
 .cell[data-mode='CLOSE'] {
   background-color: rgb(161, 161, 161);
 }

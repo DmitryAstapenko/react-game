@@ -4,13 +4,14 @@ import Cell from '../cell/Cell';
 import './BombField.css';
 
 export interface IBombFieldProps {
-  cells: ICell[][];
-  width: number;
-  height: number;
+  cells: ICell[][],
+  width: number,
+  height: number,
+  onClickCell: Function
 }
 
 export interface IBombFieldState {
-  cells: ICell[][];
+  cells: ICell[][],
 }
 
 export default class BombField extends React.Component<IBombFieldProps, IBombFieldState> {
@@ -25,7 +26,8 @@ export default class BombField extends React.Component<IBombFieldProps, IBombFie
   public render() {
     const width = this.props.width;
     const height = this.props.height;
-    const cells: ICell[][] = this.props.cells;
+    const cells = this.props.cells;
+    const onClickCell = this.props.onClickCell;
 
     return (
       <div className="bomb-field"
@@ -38,7 +40,8 @@ export default class BombField extends React.Component<IBombFieldProps, IBombFie
           <Cell key={index.toString()}
             mode={item.mode}
             coordinates={item.coordinates}
-            value={item.value}/>
+            value={item.value}
+            onClick={onClickCell}/>
         )}
       </div>
     );

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BombField from '../bomb-field/BombField';
 import { GameService } from './game-service';
-import { ICell } from '../cell/cell-service';
+import { ICell, ICoordinates, ModeCell } from '../cell/cell-service';
 import './Game.css';
 
 export interface IGameProps {
@@ -12,9 +12,9 @@ export interface IGameState {
 }
 
 export default class Game extends React.Component<IGameProps, IGameState> {
-  private fieldWidth: number = 20;
-  private fieldHeight: number = 20;
-  private countBombs: number = 50;
+  private fieldWidth: number = 10;
+  private fieldHeight: number = 10;
+  private countBombs: number = 10;
 
   constructor(props: IGameProps) {
     super(props);
@@ -22,6 +22,19 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     this.state = {      
       cells: GameService.createNewField(this.fieldWidth, this.fieldHeight, this.countBombs)
     }
+
+    this.handleClickCell = this.handleClickCell.bind(this);
+  }
+
+  private handleClickCell(coordinates: ICoordinates): void {    
+    this.openCell(coordinates);    
+  }
+
+  private openCell(coordinates: ICoordinates) {
+    this.setState((state: IGameState) => {      
+      state.cells[coordinates.y][coordinates.x].mode = ModeCell.Open;
+      return { cells: state.cells };
+    });
   }
 
   public render() {
@@ -31,6 +44,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
           width={this.fieldWidth}
           height={this.fieldHeight}
           cells={this.state.cells}
+          onClickCell={this.handleClickCell}
         />
       </div>
     );
