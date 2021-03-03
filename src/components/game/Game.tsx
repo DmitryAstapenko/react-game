@@ -1,26 +1,22 @@
 import * as React from 'react';
 import BombField from '../bomb-field/BombField';
 import { GameService } from './game-service';
-import { ICell, ICoordinates, ModeCell } from '../cell/cell-service';
+import { ICoordinates } from '../cell/cell-service';
 import './Game.css';
 
 export interface IGameProps {
 }
 
 export interface IGameState {
-  cells: ICell[][],
+  game: GameService,
 }
 
 export default class Game extends React.Component<IGameProps, IGameState> {
-  private fieldWidth: number = 10;
-  private fieldHeight: number = 10;
-  private countBombs: number = 10;
-
   constructor(props: IGameProps) {
     super(props);
 
     this.state = {
-      cells: GameService.createNewField(this.fieldWidth, this.fieldHeight, this.countBombs)
+      game: new GameService(10, 10, 10)
     }
 
     this.handleClickCell = this.handleClickCell.bind(this);
@@ -29,32 +25,28 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   private handleClickCell(event: MouseEvent, coordinates: ICoordinates): void {
     event.preventDefault();
 
-    const typeEvent = event.type;
-
-    if (typeEvent === 'click' && this.state.cells[coordinates.y][coordinates.x].mode !== ModeCell.Mark) {
-      this.changeModeCell(coordinates, ModeCell.Open);
-    } else if (typeEvent === 'contextmenu' && this.state.cells[coordinates.y][coordinates.x].mode !== ModeCell.Open) {
-      this.state.cells[coordinates.y][coordinates.x].mode === ModeCell.Close
-        ? this.changeModeCell(coordinates, ModeCell.Mark)
-        : this.changeModeCell(coordinates, ModeCell.Close);
+    if (event.type === 'click') {
+      this.state.game.openCell(coordinates);
     }
-  }
 
-  private changeModeCell(coordinates: ICoordinates, modeCell: ModeCell) {
-    this.setState((state: IGameState) => {
-      state.cells[coordinates.y][coordinates.x].mode = modeCell;
-      return { cells: state.cells };
-    });
-    console.log(modeCell);
+    if (event.type === 'contextmenu') {
+      this.state.game.markCell(coordinates);
+    }
+
+    this.setState({game: this.state.game});
   }
 
   public render() {
+    const width = this.state.game.fieldWidth;
+    const height = this.state.game.fieldHeight;
+    const cells = this.state.game.cells;
+
     return (
       <div className="game">
         <BombField
-          width={this.fieldWidth}
-          height={this.fieldHeight}
-          cells={this.state.cells}
+          width={width}
+          height={height}
+          cells={cells}
           onClickCell={this.handleClickCell}
         />
       </div>

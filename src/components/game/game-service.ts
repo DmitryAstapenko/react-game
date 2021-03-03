@@ -2,16 +2,77 @@ import { ICell, ModeCell, ICoordinates, ValueCell, BOMB } from '../cell/cell-ser
 import { AppService } from '../../app-service';
 
 export class GameService {
-  private static cells: ICell[][];
+  public readonly fieldWidth: number;
+  public readonly fieldHeight: number;
+  public readonly countBombs: number;
+  public readonly cells: ICell[][];
+  public readonly bombCoordinates: ICoordinates[];
 
-  public static createNewField(width: number, height: number, countBombs: number): ICell[][] {
-    GameService.cells = GameService.createEmptyCells(width, height);
-    const bombCoordinates: ICoordinates[] = GameService.getCoordinatesBombs(width, height, countBombs);
+  constructor(width: number, height: number, countBombs: number) {
+    this.fieldWidth = width;
+    this.fieldHeight = height;
+    this.countBombs = countBombs;
+    this.cells = GameService.createEmptyCells(width, height);
+    this.bombCoordinates = GameService.getCoordinatesBombs(width, height, countBombs);
 
-    bombCoordinates.forEach((coordinates) => GameService.cells[coordinates.x][coordinates.y].value = BOMB);
-    GameService.placeNumbersOnField();
+    this.setBombsOnField();
+    this.placeNumbersOnField();
+  }
 
-    return GameService.cells;
+  public openCell(coordinates: ICoordinates) {
+    const cell = this.cells[coordinates.y][coordinates.x];
+
+    if (cell.mode !== ModeCell.Mark) cell.mode = ModeCell.Open;
+  }
+
+  public markCell(coordinates: ICoordinates) {
+    const cell = this.cells[coordinates.y][coordinates.x];
+
+    if (cell.mode !== ModeCell.Open) {      
+      if (cell.mode === ModeCell.Close) {
+        cell.mode = ModeCell.Mark;
+      } else {
+        cell.mode = ModeCell.Close;
+      }
+    }
+  }  
+
+  private setBombsOnField() {
+    this.bombCoordinates.forEach((coordinates) =>
+      this.cells[coordinates.x][coordinates.y].value = BOMB);
+  }
+
+  private placeNumbersOnField() {
+    for (let i = 0; i < this.cells.length; i++) {
+      for (let j = 0; j < this.cells[i].length; j++) {
+        if (this.cells[i][j].value !== BOMB) {
+          this.cells[i][j].value = this.countBombsAroundCell(this.cells[i][j].coordinates)
+        }
+      }
+    }
+  }
+
+  private countBombsAroundCell(coordinates: ICoordinates): ValueCell {
+    let count: number = 0;
+
+    if (this.cells[coordinates.y - 1] &&
+      this.cells[coordinates.y - 1][coordinates.x]?.value === BOMB) count += 1;
+    if (this.cells[coordinates.y + 1] &&
+      this.cells[coordinates.y + 1][coordinates.x]?.value === BOMB) count += 1;
+    if (this.cells[coordinates.y] &&
+      this.cells[coordinates.y][coordinates.x - 1]?.value === BOMB) count += 1;
+    if (this.cells[coordinates.y] &&
+      this.cells[coordinates.y][coordinates.x + 1]?.value === BOMB) count += 1;
+    if (this.cells[coordinates.y + 1] &&
+      this.cells[coordinates.y + 1][coordinates.x + 1]?.value === BOMB) count += 1;
+    if (this.cells[coordinates.y + 1] &&
+      this.cells[coordinates.y + 1][coordinates.x - 1]?.value === BOMB) count += 1;
+    if (this.cells[coordinates.y - 1] &&
+      this.cells[coordinates.y - 1][coordinates.x + 1]?.value === BOMB) count += 1;
+    if (this.cells[coordinates.y - 1] &&
+      this.cells[coordinates.y - 1][coordinates.x - 1]?.value === BOMB) count += 1;
+
+    return count;
   }
 
   private static createEmptyCells(width: number, height: number): ICell[][] {
@@ -54,38 +115,5 @@ export class GameService {
     }
 
     return bombCoordinates;
-  }
-
-  private static placeNumbersOnField() {
-    for (let i = 0; i < GameService.cells.length; i++) {
-      for (let j = 0; j < GameService.cells[i].length; j++) {
-        if (GameService.cells[i][j].value !== BOMB) {
-          GameService.cells[i][j].value = GameService.countBombs(GameService.cells[i][j].coordinates)
-        }
-      }
-    }
-  }
-
-  private static countBombs(coordinates: ICoordinates): ValueCell {
-    let count: number = 0;
-
-    if (GameService.cells[coordinates.y - 1] && 
-      GameService.cells[coordinates.y - 1][coordinates.x]?.value === BOMB) count += 1;
-    if (GameService.cells[coordinates.y + 1] && 
-      GameService.cells[coordinates.y + 1][coordinates.x]?.value === BOMB) count += 1;
-    if (GameService.cells[coordinates.y] && 
-      GameService.cells[coordinates.y][coordinates.x - 1]?.value === BOMB) count += 1;
-    if (GameService.cells[coordinates.y] && 
-      GameService.cells[coordinates.y][coordinates.x + 1]?.value === BOMB) count += 1;
-    if (GameService.cells[coordinates.y + 1] && 
-      GameService.cells[coordinates.y + 1][coordinates.x + 1]?.value === BOMB) count += 1;
-    if (GameService.cells[coordinates.y + 1] && 
-      GameService.cells[coordinates.y + 1][coordinates.x - 1]?.value === BOMB) count += 1;
-    if (GameService.cells[coordinates.y - 1] && 
-      GameService.cells[coordinates.y - 1][coordinates.x + 1]?.value === BOMB) count += 1;
-    if (GameService.cells[coordinates.y - 1] && 
-      GameService.cells[coordinates.y - 1][coordinates.x - 1]?.value === BOMB) count += 1;
-
-    return count;
-  }
+  }  
 }
