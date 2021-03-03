@@ -1,9 +1,9 @@
 .bomb-field{
   grid-area: field;
-  padding: 2px;
+  padding: 1px;
   display: grid;  
   background-color: #ccc;
-  grid-gap: 2px;
+  grid-gap: 1px;
 }
 
 .bomb-field[data-mode='END'] {

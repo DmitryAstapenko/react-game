@@ -137,7 +137,7 @@ export class GameService {
 
   private _openCellsWithBombs() {
     this._bombCoordinates.forEach((coordinates) =>
-      this._cells[coordinates.x][coordinates.y].mode = ModeCell.Open);
+      this._cells[coordinates.y][coordinates.x].mode = ModeCell.Open);
   }
 
   private _setBombsOnField() {

@@ -36,8 +36,8 @@ export default class BombField extends React.Component<IBombFieldProps, IBombFie
       <div className="bomb-field"
         data-mode={mode}
         style={{
-          gridTemplateColumns: `repeat(${width}, 2rem)`, 
-          gridTemplateRows: `repeat(${height}, 2rem)`
+          gridTemplateColumns: `repeat(${width}, 1.5rem)`, 
+          gridTemplateRows: `repeat(${height}, 1.5rem)`
         }}
       >
         {cells.flat().map((item, index) => 
