@@ -16,10 +16,11 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     super(props);
 
     this.state = {
-      game: new GameService(10, 10, 10)
+      game: new GameService(10, 10, 5)
     }
 
     this.handleClickCell = this.handleClickCell.bind(this);
+    console.log(this.state.game);
   }
 
   private handleClickCell(event: MouseEvent, coordinates: ICoordinates): void {
@@ -32,12 +33,14 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     }
 
     this.setState({game: this.state.game});
+    console.log(this.state.game);
   }
 
   public render() {
     const width = this.state.game.fieldWidth;
     const height = this.state.game.fieldHeight;
     const cells = this.state.game.cells;
+    const mode = this.state.game.mode;
 
     return (
       <div className="game">
@@ -45,6 +48,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
           width={width}
           height={height}
           cells={cells}
+          mode={mode}
           onClickCell={this.handleClickCell}
         />
       </div>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ICell } from '../cell/cell-service';
+import { GameMode } from '../game/game-service';
 import Cell from '../cell/Cell';
 import './BombField.css';
 
@@ -7,6 +8,7 @@ export interface IBombFieldProps {
   cells: ICell[][],
   width: number,
   height: number,
+  mode: GameMode,
   onClickCell: Function
 }
 
@@ -27,10 +29,12 @@ export default class BombField extends React.Component<IBombFieldProps, IBombFie
     const width = this.props.width;
     const height = this.props.height;
     const cells = this.props.cells;
+    const mode = this.props.mode;
     const onClickCell = this.props.onClickCell;
 
     return (
       <div className="bomb-field"
+        data-mode={mode}
         style={{
           gridTemplateColumns: `repeat(${width}, 2rem)`, 
           gridTemplateRows: `repeat(${height}, 2rem)`

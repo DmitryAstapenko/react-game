@@ -1,4 +1,11 @@
 .bomb-field{
   grid-area: field;
+  padding: 2px;
   display: grid;  
+  background-color: #ccc;
+  grid-gap: 2px;
+}
+
+.bomb-field[data-mode='END'] {
+  pointer-events: none;
 }
