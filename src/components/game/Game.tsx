@@ -16,11 +16,10 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     super(props);
 
     this.state = {
-      game: new GameService(50, 25, 100)
+      game: new GameService(10, 10, 10)
     }
 
     this.handleClickCell = this.handleClickCell.bind(this);
-    console.log(this.state.game);
   }
 
   private handleClickCell(event: MouseEvent, coordinates: ICoordinates): void {
@@ -33,7 +32,6 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     }
 
     this.setState({game: this.state.game});
-    console.log(this.state.game);
   }
 
   public render() {
