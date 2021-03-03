@@ -142,7 +142,7 @@ export class GameService {
 
   private _setBombsOnField() {
     this._bombCoordinates.forEach((coordinates) =>
-      this._cells[coordinates.x][coordinates.y].value = BOMB);
+      this._cells[coordinates.y][coordinates.x].value = BOMB);
   }
 
   private _placeNumbersOnField() {

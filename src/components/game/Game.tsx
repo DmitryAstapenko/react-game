@@ -16,7 +16,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     super(props);
 
     this.state = {
-      game: new GameService(10, 10, 5)
+      game: new GameService(50, 25, 100)
     }
 
     this.handleClickCell = this.handleClickCell.bind(this);
