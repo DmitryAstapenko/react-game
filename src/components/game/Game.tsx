@@ -26,10 +26,8 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     event.preventDefault();
 
     if (event.type === 'click') {
-      this.state.game.openCell(coordinates);
-    }
-
-    if (event.type === 'contextmenu') {
+      this.state.game.checkCell(coordinates);
+    } else if (event.type === 'contextmenu') {
       this.state.game.markCell(coordinates);
     }
 

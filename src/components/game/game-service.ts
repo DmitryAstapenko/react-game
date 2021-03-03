@@ -1,6 +1,18 @@
 import { ICell, ModeCell, ICoordinates, ValueCell, BOMB } from '../cell/cell-service';
 import { AppService } from '../../app-service';
 
+export enum GameMode {  
+  Play = 'PLAY',
+  Pause = 'PAUSE',
+  End = 'END',
+}
+
+export enum GameResult {
+  Undefined = 'UNDEFINED',
+  Success = 'SUCCESS',
+  Failure = 'FAILURE',
+}
+
 export class GameService {
   public readonly fieldWidth: number;
   public readonly fieldHeight: number;
@@ -19,23 +31,55 @@ export class GameService {
     this.placeNumbersOnField();
   }
 
-  public openCell(coordinates: ICoordinates) {
+  public checkCell(coordinates: ICoordinates) {
     const cell = this.cells[coordinates.y][coordinates.x];
 
-    if (cell.mode !== ModeCell.Mark) cell.mode = ModeCell.Open;
+    if (cell.mode === ModeCell.Mark) return;
+
+    if (cell.value === BOMB) {
+      this.openCellsWithBombs();
+    } else if(cell.value === 0) {
+      this.openEmptyCells(coordinates);
+    } else {
+      this.openCell(coordinates);
+    }
   }
 
   public markCell(coordinates: ICoordinates) {
     const cell = this.cells[coordinates.y][coordinates.x];
 
-    if (cell.mode !== ModeCell.Open) {      
+    if (cell.mode !== ModeCell.Open) {
       if (cell.mode === ModeCell.Close) {
         cell.mode = ModeCell.Mark;
       } else {
         cell.mode = ModeCell.Close;
       }
     }
-  }  
+  }
+
+  private openCell(coordinates: ICoordinates) {
+    const cell = this.cells[coordinates.y][coordinates.x];
+
+    if (cell.mode !== ModeCell.Mark) cell.mode = ModeCell.Open;
+  }
+
+  private openEmptyCells(coordinates: ICoordinates) {
+    const cell = this.cells[coordinates.y][coordinates.x];
+
+    this.openCell(coordinates);
+
+    if (cell.value === 0) {
+      this.getNeighboringCells(coordinates).forEach((cell) => {
+        if (cell.mode !== ModeCell.Open && cell.mode !== ModeCell.Mark)
+          this.openEmptyCells(cell.coordinates);
+      });
+    }
+  }
+
+  private openCellsWithBombs() {
+    this.bombCoordinates.forEach((coordinates) =>
+      this.cells[coordinates.x][coordinates.y].mode = ModeCell.Open);
+  }
 
   private setBombsOnField() {
     this.bombCoordinates.forEach((coordinates) =>
@@ -46,7 +90,7 @@ export class GameService {
     for (let i = 0; i < this.cells.length; i++) {
       for (let j = 0; j < this.cells[i].length; j++) {
         if (this.cells[i][j].value !== BOMB) {
-          this.cells[i][j].value = this.countBombsAroundCell(this.cells[i][j].coordinates)
+          this.cells[i][j].value = this.countBombsAroundCell(this.cells[i][j].coordinates);
         }
       }
     }
@@ -55,24 +99,34 @@ export class GameService {
   private countBombsAroundCell(coordinates: ICoordinates): ValueCell {
     let count: number = 0;
 
-    if (this.cells[coordinates.y - 1] &&
-      this.cells[coordinates.y - 1][coordinates.x]?.value === BOMB) count += 1;
-    if (this.cells[coordinates.y + 1] &&
-      this.cells[coordinates.y + 1][coordinates.x]?.value === BOMB) count += 1;
-    if (this.cells[coordinates.y] &&
-      this.cells[coordinates.y][coordinates.x - 1]?.value === BOMB) count += 1;
-    if (this.cells[coordinates.y] &&
-      this.cells[coordinates.y][coordinates.x + 1]?.value === BOMB) count += 1;
-    if (this.cells[coordinates.y + 1] &&
-      this.cells[coordinates.y + 1][coordinates.x + 1]?.value === BOMB) count += 1;
-    if (this.cells[coordinates.y + 1] &&
-      this.cells[coordinates.y + 1][coordinates.x - 1]?.value === BOMB) count += 1;
-    if (this.cells[coordinates.y - 1] &&
-      this.cells[coordinates.y - 1][coordinates.x + 1]?.value === BOMB) count += 1;
-    if (this.cells[coordinates.y - 1] &&
-      this.cells[coordinates.y - 1][coordinates.x - 1]?.value === BOMB) count += 1;
+    this.getNeighboringCells(coordinates).forEach((cell) => {
+      if (cell.value === BOMB) count += 1;
+    });
 
     return count;
+  }
+
+  private getNeighboringCells(coordinates: ICoordinates): ICell[] {
+    let neighboringCells: ICell[] = [];
+
+    if (this.cells[coordinates.y - 1] && this.cells[coordinates.y - 1][coordinates.x])
+       neighboringCells.push(this.cells[coordinates.y - 1][coordinates.x]);
+    if (this.cells[coordinates.y + 1] && this.cells[coordinates.y + 1][coordinates.x])
+       neighboringCells.push(this.cells[coordinates.y + 1][coordinates.x]);
+    if (this.cells[coordinates.y] && this.cells[coordinates.y][coordinates.x - 1])
+       neighboringCells.push(this.cells[coordinates.y][coordinates.x - 1]);
+    if (this.cells[coordinates.y] && this.cells[coordinates.y][coordinates.x + 1])
+       neighboringCells.push(this.cells[coordinates.y][coordinates.x + 1]);
+    if (this.cells[coordinates.y + 1] && this.cells[coordinates.y + 1][coordinates.x + 1])
+       neighboringCells.push(this.cells[coordinates.y + 1][coordinates.x + 1]);
+    if (this.cells[coordinates.y + 1] && this.cells[coordinates.y + 1][coordinates.x - 1])
+       neighboringCells.push(this.cells[coordinates.y + 1][coordinates.x - 1]);
+    if (this.cells[coordinates.y - 1] && this.cells[coordinates.y - 1][coordinates.x + 1])
+       neighboringCells.push(this.cells[coordinates.y - 1][coordinates.x + 1]);
+    if (this.cells[coordinates.y - 1] && this.cells[coordinates.y - 1][coordinates.x - 1])
+       neighboringCells.push(this.cells[coordinates.y - 1][coordinates.x - 1]);
+
+    return neighboringCells;
   }
 
   private static createEmptyCells(width: number, height: number): ICell[][] {
@@ -115,5 +169,5 @@ export class GameService {
     }
 
     return bombCoordinates;
-  }  
+  }
 }
