@@ -19,7 +19,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     super(props);
 
     this.state = {
-      game: new GameService(50, 10, 2)
+      game: new GameService(10, 10, 10)
     }
 
     this.handleClickCell = this.handleClickCell.bind(this);
@@ -43,13 +43,16 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     const cells = this.state.game.cells;
     const mode = this.state.game.mode;
     const result = this.state.game.result;
+    const startTime = this.state.game.startTime;
     const countMarkCells = this.state.game.countBombs - this.state.game.countFlags;
 
     return (
       <div className="game">
-        <Counter countMarkCells={countMarkCells} />
-        <Smile result={result} />
-        <Timer></Timer>
+        <div className="game-header">
+          <Counter countMarkCells={countMarkCells} />
+          <Smile result={result} />
+          <Timer startTimer={startTime} gameMode={mode}/>
+        </div>        
         <BombField
           width={width}
           height={height}

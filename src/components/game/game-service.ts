@@ -22,8 +22,8 @@ export class GameService {
   private _bombCoordinates: ICoordinates[];
   private _mode: GameMode;
   private _result: GameResult;
-  private _startTime: Date | undefined;
-  private _endTime: Date | undefined;
+  private _startTime: number;
+  private _endTime: number;
 
   constructor(width: number, height: number, _countBombs: number) {
     this._fieldWidth = width;
@@ -34,6 +34,8 @@ export class GameService {
     this._bombCoordinates = GameService._getCoordinatesBombs(width, height, _countBombs);
     this._mode = GameMode.Pause;
     this._result = GameResult.Undefined;    
+    this._startTime = 0;
+    this._endTime = 0;
 
     this._setBombsOnField();
     this._placeNumbersOnField();
@@ -65,6 +67,10 @@ export class GameService {
 
   public get countFlags(): number {
     return this._countFlags;
+  }
+
+  public get startTime(): number {
+    return this._startTime;
   }
 
   public checkCell(coordinates: ICoordinates) {
@@ -101,13 +107,13 @@ export class GameService {
 
   private _startGame() {
     this._mode = GameMode.Play;
-    this._startTime = new Date();
+    this._startTime = Date.now();
   }
 
   private _endGame(result: GameResult) {
     this._mode = GameMode.End;
     this._result = result;
-    this._endTime = new Date();
+    this._endTime = Date.now();
   }
 
   private _checkGame(): boolean {

@@ -2,9 +2,15 @@
   padding: 1px;
   display: grid;
   grid-template-areas: 
-    'counter smile timer'
+    'header header header'
     'field field field'
     'field field field'
     'field field field';  
   background-color: #ccc;  
+}
+
+.game-header {
+  grid-area: header;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }

@@ -1,5 +1,4 @@
-.game-counter {
-  grid-area: counter;
+.game-counter {  
   padding: 1px;  
 }
 
@@ -10,7 +9,5 @@
   width: 2.5rem;
   height: 2.5rem;
   font-weight: 900;
-  font-size: 1.5rem;
-  color: red;
-  background-color: black;
+  font-size: 1rem;  
 }

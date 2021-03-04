@@ -1,9 +1,6 @@
-.game-smile {
-  grid-area: smile;
+.game-smile {  
   padding: 1px;   
-  display: flex;
-  justify-content: center;
-  align-items: center;  
+  margin: 0 auto;  
 }
 
 .game-smile__result {

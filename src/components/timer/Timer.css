@@ -1,3 +1,14 @@
-.game-timer {
-  grid-area: timer;
+.game-timer {  
+  padding: 1px;  
+  margin-left: auto;
+}
+
+.game-timer__time {  
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  width: 5rem;
+  height: 2.5rem;
+  font-weight: 900;
+  font-size: 1rem;  
 }
