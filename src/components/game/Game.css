@@ -1,8 +1,9 @@
 .game{
   display: grid;
   grid-template-areas: 
-    'header header header header header'
-    'field field field field field'
-    'field field field field field'
-    'field field field field field';
+    'counter smile timer'
+    'field field field'
+    'field field field'
+    'field field field';
+  grid-gap: 0.25;  
 }

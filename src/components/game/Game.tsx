@@ -1,7 +1,10 @@
 import * as React from 'react';
-import BombField from '../bomb-field/BombField';
 import { GameService } from './game-service';
 import { ICoordinates } from '../cell/cell-service';
+import BombField from '../bomb-field/BombField';
+import Counter from '../counter/Counter';
+import Smile from '../smile/Smile';
+import Timer from '../timer/Timer';
 import './Game.css';
 
 export interface IGameProps {
@@ -42,6 +45,9 @@ export default class Game extends React.Component<IGameProps, IGameState> {
 
     return (
       <div className="game">
+        <Counter></Counter>
+        <Smile></Smile>
+        <Timer></Timer>
         <BombField
           width={width}
           height={height}

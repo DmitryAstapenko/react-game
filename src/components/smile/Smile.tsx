@@ -1,5 +1,5 @@
 import * as React from 'react';
-import 'Smile.css';
+import '../smile/Smile.css';
 
 export interface ISmileProps {
 }
@@ -17,7 +17,7 @@ export default class Smile extends React.Component<ISmileProps, ISmileState> {
 
   public render() {
     return (
-      <div className="smile">
+      <div className="game-smile">
         
       </div>
     );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import 'Counter.css';
+import '../counter/Counter.css';
 
 export interface ICounterProps {
 }
@@ -17,7 +17,7 @@ export default class Counter extends React.Component<ICounterProps, ICounterStat
 
   public render() {
     return (
-      <div className="counter">
+      <div className="game-counter">
         
       </div>
     );

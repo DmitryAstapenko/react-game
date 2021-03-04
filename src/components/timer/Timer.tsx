@@ -17,7 +17,7 @@ export default class Timer extends React.Component<ITimerProps, ITimerState> {
 
   public render() {
     return (
-      <div className="timer">
+      <div className="game-timer">
         
       </div>
     );
