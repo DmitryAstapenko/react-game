@@ -48,19 +48,21 @@ export default class Game extends React.Component<IGameProps, IGameState> {
 
     return (
       <div className="game">
-        <div className="game-header">
-          <Counter countMarkCells={countMarkCells} />
-          <Smile result={result} />
-          <Timer startTimer={startTime} gameMode={mode}/>
-        </div>        
-        <BombField
-          width={width}
-          height={height}
-          cells={cells}
-          mode={mode}
-          onClickCell={this.handleClickCell}
-        />
-      </div>
+        <div className="game__container">
+          <div className="game__header">
+            <Counter countMarkCells={countMarkCells} />
+            <Smile result={result} />
+            <Timer startTimer={startTime} gameMode={mode}/>
+          </div>        
+          <BombField
+            width={width}
+            height={height}
+            cells={cells}
+            mode={mode}
+            onClickCell={this.handleClickCell}
+          />
+        </div>
+      </div>      
     );
   }
 }
