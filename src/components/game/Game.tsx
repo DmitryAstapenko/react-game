@@ -5,6 +5,7 @@ import BombField from '../bomb-field/BombField';
 import Counter from '../counter/Counter';
 import Smile from '../smile/Smile';
 import Timer from '../timer/Timer';
+import Setting from '../setting/Setting';
 import './Game.css';
 
 export interface IGameProps {
@@ -19,13 +20,14 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     super(props);
 
     this.state = {
-      game: new GameService(10, 10, 10)
+      game: new GameService(20, 20, 40)
     }
 
     this.handleClickCell = this.handleClickCell.bind(this);
+    this.handleClickSmile = this.handleClickSmile.bind(this);
   }
 
-  private handleClickCell(event: MouseEvent, coordinates: ICoordinates): void {
+  private handleClickCell(event: MouseEvent, coordinates: ICoordinates) {
     event.preventDefault();
 
     if (event.type === 'click') {
@@ -34,6 +36,12 @@ export default class Game extends React.Component<IGameProps, IGameState> {
       this.state.game.markCell(coordinates);
     }
 
+    this.setState({game: this.state.game});
+  }
+
+  private handleClickSmile() {
+    console.log('smile');
+    this.state.game.repeatGame();
     this.setState({game: this.state.game});
   }
 
@@ -48,10 +56,11 @@ export default class Game extends React.Component<IGameProps, IGameState> {
 
     return (
       <div className="game">
+        <Setting></Setting>
         <div className="game__container">
           <div className="game__header">
             <Counter countMarkCells={countMarkCells} />
-            <Smile result={result} />
+            <Smile result={result} onClickSmile={this.handleClickSmile} />
             <Timer startTimer={startTime} gameMode={mode}/>
           </div>        
           <BombField

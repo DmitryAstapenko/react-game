@@ -4,7 +4,8 @@ import { SMILE, SMILE_HAPPY, SMILE_SAD } from './smile-service';
 import '../smile/Smile.css';
 
 export interface ISmileProps {
-  result: GameResult
+  result: GameResult,
+  onClickSmile: Function
 }
 
 export interface ISmileState {
@@ -19,6 +20,7 @@ export default class Smile extends React.Component<ISmileProps, ISmileState> {
   }
 
   public render() {
+    const onClickSmile = this.props.onClickSmile;
     let smile: string;
 
     if (this.props.result === GameResult.Success) {
@@ -31,7 +33,7 @@ export default class Smile extends React.Component<ISmileProps, ISmileState> {
 
     return (
       <div className="game-smile">
-        <span className="game-smile__result">{smile}</span>
+        <span className="game-smile__result" onClick={() => onClickSmile()}>{smile}</span>
       </div>
     );
   }

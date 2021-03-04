@@ -105,6 +105,16 @@ export class GameService {
     }
   }
 
+  public repeatGame() {   
+    this._countFlags = 0;    
+    this._mode = GameMode.Pause;
+    this._result = GameResult.Undefined;    
+    this._startTime = 0;
+    this._endTime = 0;
+
+    this._cells.forEach((row) => row.forEach((cell) => cell.mode = ModeCell.Close));
+  }
+
   private _startGame() {
     this._mode = GameMode.Play;
     this._startTime = Date.now();

@@ -11,4 +11,10 @@
   height: 2.5rem;
   font-weight: 900;
   font-size: 1.75rem;  
+  transition: all 0.25 ease;
+}
+
+.game-smile__result:hover {
+  cursor: pointer;
+  transform: scale(1.1);
 }
