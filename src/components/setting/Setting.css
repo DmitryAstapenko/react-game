@@ -1,0 +1,45 @@
+.game-setting {
+  position: fixed; 
+  display: flex; 
+  width: 100%;
+  height: 100%;  
+  transition: all 0.25s ease;    
+  z-index: 10;
+}
+
+.game-setting[data-visible='SHOW'] {
+  top: 0;
+  left: 0;
+}
+
+.game-setting[data-visible='HIDE'] {
+  top: 0;
+  left: -100%;
+}
+
+.game-setting__button-show {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  font-size: 2rem;  
+  font-weight: 900;
+  transition: all 0.25s ease;  
+}
+
+.game-setting__button-show:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.game-setting__overlay {  
+  width: calc(100% - 20rem);
+  height: 100%;
+  background-color: rgba(204, 204, 204, 0.5);    
+}
+
+.game-setting__container {  
+  padding: 4rem 1rem 1rem 1rem;
+  width: 20rem;
+  height: 100%;    
+  background-color: #ccc;  
+}
