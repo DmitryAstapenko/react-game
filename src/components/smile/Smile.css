@@ -1,3 +1,17 @@
 .game-smile {
   grid-area: smile;
+  padding: 1px;   
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+
+.game-smile__result {
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  width: 2.5rem;  
+  height: 2.5rem;
+  font-weight: 900;
+  font-size: 1.75rem;  
 }

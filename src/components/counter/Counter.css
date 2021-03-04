@@ -1,6 +1,6 @@
 .game-counter {
   grid-area: counter;
-  padding: 1px 1px 0 1px;  
+  padding: 1px;  
 }
 
 .game-counter__count {  

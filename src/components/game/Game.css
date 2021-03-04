@@ -1,9 +1,10 @@
-.game{
+.game {
+  padding: 1px;
   display: grid;
   grid-template-areas: 
     'counter smile timer'
     'field field field'
     'field field field'
     'field field field';  
-  background-color: #ccc;
+  background-color: #ccc;  
 }
