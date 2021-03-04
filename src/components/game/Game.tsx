@@ -42,11 +42,13 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     const height = this.state.game.fieldHeight;
     const cells = this.state.game.cells;
     const mode = this.state.game.mode;
+    const result = this.state.game.result;
+    const countMarkCells = this.state.game.countBombs - this.state.game.countFlags;
 
     return (
       <div className="game">
-        <Counter></Counter>
-        <Smile></Smile>
+        <Counter countMarkCells={countMarkCells} />
+        <Smile result={result} />
         <Timer></Timer>
         <BombField
           width={width}

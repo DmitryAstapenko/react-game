@@ -59,6 +59,14 @@ export class GameService {
     return this._result;
   }
 
+  public get countBombs(): number {
+    return this._countBombs;
+  }
+
+  public get countFlags(): number {
+    return this._countFlags;
+  }
+
   public checkCell(coordinates: ICoordinates) {
     const cell = this._cells[coordinates.y][coordinates.x];
 
@@ -78,10 +86,10 @@ export class GameService {
   }
 
   public markCell(coordinates: ICoordinates) {
-    const cell = this._cells[coordinates.y][coordinates.x];
+    const cell = this._cells[coordinates.y][coordinates.x];    
 
     if (cell.mode !== ModeCell.Open) {
-      if (cell.mode === ModeCell.Close) {
+      if (cell.mode === ModeCell.Close && this._countBombs - this._countFlags > 0) {
         cell.mode = ModeCell.Mark;
         this._countFlags += 1;
       } else if (cell.mode === ModeCell.Mark) {
