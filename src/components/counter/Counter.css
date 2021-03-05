@@ -3,10 +3,11 @@
 }
 
 .game-counter__count {  
+  padding: 0 4px;
   display: flex;
   justify-content: center;
   align-items: center;  
-  width: 2.5rem;
+  width: max-content;
   height: 2.5rem;
   font-weight: 900;
   font-size: 1rem;  

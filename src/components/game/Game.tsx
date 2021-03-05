@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GameService, PLAY } from './game-service';
+import { GameService } from './game-service';
 import { ICoordinates } from '../cell/cell-service';
 import BombField from '../bomb-field/BombField';
 import Counter from '../counter/Counter';
@@ -20,7 +20,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     super(props);
 
     this.state = {
-      game: new GameService(20, 20, 40)
+      game: new GameService(10, 10, 10)
     }
 
     this._handleClickCell = this._handleClickCell.bind(this);
@@ -45,9 +45,9 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     this.setState({game: this.state.game});
   }
 
-  private _handleClickPlay() {
-    const newGame = new GameService(20, 20, 20);
-    
+  private _handleClickPlay(width: number, height: number, bomb: number) {
+    const newGame = new GameService(width, height, bomb);
+
     this.setState({game: newGame});
   }
 
@@ -61,9 +61,8 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     const countMarkCells = this.state.game.countBombs - this.state.game.countFlags;
 
     return (
-      <div className="game">
-        <span className="game__button-play" onClick={this._handleClickPlay}>{PLAY}</span>
-        <Setting></Setting>
+      <div className="game">        
+        <Setting onClickPlay={this._handleClickPlay}></Setting>
         <div className="game__container">
           <div className="game__header">
             <Counter countMarkCells={countMarkCells} />
