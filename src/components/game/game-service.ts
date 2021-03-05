@@ -13,6 +13,8 @@ export enum GameResult {
   Failure = 'FAILURE',
 }
 
+export const PLAY = '►';
+
 export class GameService {
   private _fieldWidth: number;
   private _fieldHeight: number;

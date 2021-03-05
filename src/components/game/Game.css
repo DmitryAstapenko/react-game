@@ -22,3 +22,17 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
+
+.game__button-play {
+  position: fixed;
+  top: 1rem;
+  left: 3rem;
+  font-size: 2rem;  
+  font-weight: 900;
+  transition: all 0.25s ease;  
+}
+
+.game__button-play:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}

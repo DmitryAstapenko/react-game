@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GameService } from './game-service';
+import { GameService, PLAY } from './game-service';
 import { ICoordinates } from '../cell/cell-service';
 import BombField from '../bomb-field/BombField';
 import Counter from '../counter/Counter';
@@ -23,11 +23,12 @@ export default class Game extends React.Component<IGameProps, IGameState> {
       game: new GameService(20, 20, 40)
     }
 
-    this.handleClickCell = this.handleClickCell.bind(this);
-    this.handleClickSmile = this.handleClickSmile.bind(this);
+    this._handleClickCell = this._handleClickCell.bind(this);
+    this._handleClickSmile = this._handleClickSmile.bind(this);
+    this._handleClickPlay = this._handleClickPlay.bind(this);
   }
 
-  private handleClickCell(event: MouseEvent, coordinates: ICoordinates) {
+  private _handleClickCell(event: MouseEvent, coordinates: ICoordinates) {
     event.preventDefault();
 
     if (event.type === 'click') {
@@ -39,10 +40,15 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     this.setState({game: this.state.game});
   }
 
-  private handleClickSmile() {
-    console.log('smile');
+  private _handleClickSmile() {    
     this.state.game.repeatGame();
     this.setState({game: this.state.game});
+  }
+
+  private _handleClickPlay() {
+    const newGame = new GameService(20, 20, 20);
+    
+    this.setState({game: newGame});
   }
 
   public render() {
@@ -56,11 +62,12 @@ export default class Game extends React.Component<IGameProps, IGameState> {
 
     return (
       <div className="game">
+        <span className="game__button-play" onClick={this._handleClickPlay}>{PLAY}</span>
         <Setting></Setting>
         <div className="game__container">
           <div className="game__header">
             <Counter countMarkCells={countMarkCells} />
-            <Smile result={result} onClickSmile={this.handleClickSmile} />
+            <Smile result={result} onClickSmile={this._handleClickSmile} />
             <Timer startTimer={startTime} gameMode={mode}/>
           </div>        
           <BombField
@@ -68,7 +75,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
             height={height}
             cells={cells}
             mode={mode}
-            onClickCell={this.handleClickCell}
+            onClickCell={this._handleClickCell}
           />
         </div>
       </div>      
