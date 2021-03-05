@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GameService } from './game-service';
+import { GameService, GameResult } from './game-service';
 import { ICoordinates } from '../cell/cell-service';
 import BombField from '../bomb-field/BombField';
 import Counter from '../counter/Counter';
@@ -58,6 +58,8 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     const mode = this.state.game.mode;
     const result = this.state.game.result;
     const startTime = this.state.game.startTime;
+    const endTime = this.state.game.endTime;
+    const time = (new Date(endTime - startTime - (3 * 60 * 60 * 1000))).toLocaleTimeString('it-IT');
     const countMarkCells = this.state.game.countBombs - this.state.game.countFlags;
 
     return (
@@ -68,6 +70,12 @@ export default class Game extends React.Component<IGameProps, IGameState> {
             <Counter countMarkCells={countMarkCells} />
             <Smile result={result} onClickSmile={this._handleClickSmile} />
             <Timer startTimer={startTime} gameMode={mode}/>
+          </div>
+          <div className="game__overlay" data-result={result}>
+            {result === GameResult.Success
+              ? `you defused all bombs in: ${time}`
+              : 'you exploded on the bomb'
+            }
           </div>        
           <BombField
             width={width}
@@ -76,7 +84,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
             mode={mode}
             onClickCell={this._handleClickCell}
           />
-        </div>
+        </div>        
       </div>      
     );
   }

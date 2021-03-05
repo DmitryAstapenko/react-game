@@ -75,6 +75,10 @@ export class GameService {
     return this._startTime;
   }
 
+  public get endTime(): number {
+    return this._endTime;
+  }
+
   public checkCell(coordinates: ICoordinates) {
     const cell = this._cells[coordinates.y][coordinates.x];
 

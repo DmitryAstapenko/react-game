@@ -60,8 +60,7 @@ export default class Setting extends React.Component<ISettingProps, ISettingStat
   }
 
   private _handleChangeBombs(value: number) {
-    const count = this.state.width * this.state.height;
-    console.log(this.state.width, this.state.height);
+    const count = this.state.width * this.state.height;    
     value = value < 10 ? 10 : value;
     value = value > count ? count : value;
     this.setState({bombs: value});
