@@ -13,33 +13,44 @@ export interface ITimerState {
 
 export default class Timer extends React.Component<ITimerProps, ITimerState> {
   private _timerID!: NodeJS.Timeout;
+  private _isStartTimer: boolean;
 
   constructor(props: ITimerProps) {
     super(props);
 
+    this._isStartTimer = false;
+
     this.state = {
       time: this.props.startTimer,
     }
-  }
+  }  
 
-  componentDidUpdate() {
-    if (!this._timerID && this.props.gameMode === GameMode.Play) {
-      this._timerID = setInterval(() => this.tick(), 1000);
+  componentWillReceiveProps(nextProps: ITimerProps) {    
+    if (!nextProps.startTimer) this.setState({ time: 0 });
+  }  
+
+  componentDidUpdate() {    
+    if (!this._isStartTimer && this.props.gameMode === GameMode.Play) {
+      this._timerID = setInterval(() => this._tick(), 1000);
+      this._isStartTimer = true;
     }
 
     if (this.props.gameMode === GameMode.End || this.props.gameMode === GameMode.Pause) {
       clearInterval(this._timerID);
+      this._isStartTimer = false;
     }
   }
 
-  tick() {
+  private _tick() {
     this.setState({
       time: Date.now() - this.props.startTimer - (3 * 60 * 60 * 1000)
     });
-  }
+  }  
 
-  public render() {
-    const time = this.state.time ? new Date(this.state.time) : new Date(0, 0);
+  public render() {    
+    const time = this.state.time 
+      ? new Date(this.state.time) 
+      : new Date(0, 0);
 
     return (
       <div className="game-timer">
