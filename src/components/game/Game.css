@@ -18,8 +18,7 @@
     'field field field';  
   background-color: #ccc;  
   max-height: 85vh;
-  overflow: auto;  
-  z-index: 1;
+  overflow: auto;    
 }
 
 .game__header {

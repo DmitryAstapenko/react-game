@@ -32,8 +32,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     this.state = {
       game: game
     }
-
-    // localStorage.clear();
+    
     window.addEventListener('unload', () => {
       this.state.game.pauseGame();
       Game._saveGameLocalStorage(this.state.game)
