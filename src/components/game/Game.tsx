@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { GameService, GameResult, IGameService, GameMode } from './game-service';
-import { ICoordinates } from '../cell/cell-service';
+import { BOMB, ICoordinates } from '../cell/cell-service';
+import { Howl } from 'howler';
 import BombField from '../bomb-field/BombField';
 import Counter from '../counter/Counter';
 import Smile from '../smile/Smile';
@@ -18,21 +19,27 @@ export interface IGameState {
 export default class Game extends React.Component<IGameProps, IGameState> {
   private _timerID!: NodeJS.Timeout;
   private _isStartTimer: boolean;
+  private _audioClick: Howl;
+  private _audioBack: Howl;
+  private _audioExplosion: Howl;
+  private _isPlaySounds: boolean;
 
   constructor(props: IGameProps) {
     super(props);
 
     this._isStartTimer = false;
+    this._audioBack = new Howl({ src: ['static/audio/back.mp3'], volume: 0, loop: true });
+    this._audioClick = new Howl({ src: ['static/audio/click.mp3'], volume: 0.5,});
+    this._audioExplosion = new Howl({ src: ['static/audio/explosion.mp3'], volume: 0.5});
+    this._isPlaySounds = true;
 
     const saveGame = Game._getSaveLocalStorage();
-    const game = saveGame._cells
-      ? new GameService(0, 0, 0, saveGame)
-      : new GameService(10, 10, 10);
+    const game = saveGame._cells ? new GameService(0, 0, 0, saveGame) : new GameService(10, 10, 10);
 
     this.state = {
       game: game
     }
-    
+
     window.addEventListener('unload', () => {
       this.state.game.pauseGame();
       Game._saveGameLocalStorage(this.state.game)
@@ -41,6 +48,10 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     this._handleClickCell = this._handleClickCell.bind(this);
     this._handleClickSmile = this._handleClickSmile.bind(this);
     this._handleClickPlay = this._handleClickPlay.bind(this);
+    this._handleChangeVolumeSounds = this._handleChangeVolumeSounds.bind(this);
+    this._handleChangeVolumeMusic = this._handleChangeVolumeMusic.bind(this);
+    this._handlePlayMusic = this._handlePlayMusic.bind(this);
+    this._handlePlaySounds = this._handlePlaySounds.bind(this);
   }
 
   componentDidUpdate() {
@@ -54,8 +65,13 @@ export default class Game extends React.Component<IGameProps, IGameState> {
 
     if (event.type === 'click') {
       this.state.game.checkCell(coordinates);
+      if (this._isPlaySounds) {
+        if (this.state.game.cells[coordinates.y][coordinates.x].value === BOMB) this._audioExplosion.play();
+        else this._audioClick.play();
+      }
     } else if (event.type === 'contextmenu') {
       this.state.game.markCell(coordinates);
+      this._audioClick.play();
     }
 
     this.setState({game: this.state.game});
@@ -75,6 +91,29 @@ export default class Game extends React.Component<IGameProps, IGameState> {
     if (this._isStartTimer) this._closeTimer();
 
     this.setState({game: newGame});
+  }
+
+  private _handleChangeVolumeSounds(volume: number) {
+    this._audioClick.volume(volume / 100);
+    this._audioExplosion.volume(volume / 100);
+  }
+
+  private _handleChangeVolumeMusic(volume: number) {
+    console.log(volume);
+    console.log(this._audioBack);
+    this._audioBack.volume(volume / 100);
+  }
+
+  private _handlePlayMusic(isPlay: boolean) {
+    if (isPlay) {
+      this._audioBack.play();
+    } else {
+      this._audioBack.stop();
+    }
+  }
+
+  private _handlePlaySounds(isPlay: boolean) {
+    this._isPlaySounds = isPlay;
   }
 
   private _startTimer() {
@@ -112,7 +151,12 @@ export default class Game extends React.Component<IGameProps, IGameState> {
 
     return (
       <div className="game">
-        <Setting onClickPlay={this._handleClickPlay}></Setting>
+        <Setting onClickPlay={this._handleClickPlay}
+          onChangeVolumeSounds={this._handleChangeVolumeSounds}
+          onChangeVolumeMusic={this._handleChangeVolumeMusic}
+          onPlayMusic={this._handlePlayMusic}
+          onPlaySounds={this._handlePlaySounds}
+        ></Setting>
         <div className="game__container">
           <div className="game__header">
             <Counter countMarkCells={countMarkCells} />

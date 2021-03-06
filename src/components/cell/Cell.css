@@ -29,6 +29,10 @@
   opacity: 0;
 }
 
+.cell[data-mode='OPEN'] {
+  pointer-events: none;
+}
+
 .cell:hover {
   cursor: pointer;  
   background-color: #ccc;

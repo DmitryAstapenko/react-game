@@ -5,7 +5,11 @@ import { DisplayMode, SETTING } from './setting-service';
 import './Setting.css';
 
 export interface ISettingProps {
-  onClickPlay: Function
+  onClickPlay: Function,
+  onChangeVolumeSounds: Function,
+  onChangeVolumeMusic: Function,
+  onPlayMusic: Function,
+  onPlaySounds: Function
 }
 
 export interface ISettingState {
@@ -27,10 +31,6 @@ export default class Setting extends React.Component<ISettingProps, ISettingStat
     }
 
     this._handleChangeVisible = this._handleChangeVisible.bind(this);
-    // this._handleChangeWidth = this._handleChangeWidth.bind(this);
-    // this._handleChangeHeight = this._handleChangeHeight.bind(this);
-    // this._handleChangeBombs = this._handleChangeBombs.bind(this);
-    // this._handleClickButtonDifficulty = this._handleClickButtonDifficulty.bind(this);
   }
 
   private _handleChangeVisible() {
@@ -60,7 +60,7 @@ export default class Setting extends React.Component<ISettingProps, ISettingStat
   }
 
   private _handleChangeBombs(value: number) {
-    const count = this.state.width * this.state.height;    
+    const count = this.state.width * this.state.height;
     value = value < 10 ? 10 : value;
     value = value > count ? count : value;
     this.setState({bombs: value});
@@ -72,6 +72,10 @@ export default class Setting extends React.Component<ISettingProps, ISettingStat
     const height = this.state.height;
     const bombs = this.state.bombs;
     const onClickPlay = this.props.onClickPlay;
+    const onChangeVolumeSounds = this.props.onChangeVolumeSounds;
+    const onChangeVolumeMusic = this.props.onChangeVolumeMusic;
+    const onPlayMusic = this.props.onPlayMusic;
+    const onPlaySounds = this.props.onPlaySounds;
 
     return (
       <div className="game-setting" data-visible={visible}>
@@ -110,14 +114,26 @@ export default class Setting extends React.Component<ISettingProps, ISettingStat
           <h5>App Settings</h5>
           <Form.Group>
             <Form.Label>Music volume</Form.Label>
-            <Form.Control defaultValue="50" type="range" />
+            <Form.Control defaultValue={0}
+              onChange={(event) => onChangeVolumeMusic(+event.currentTarget.value)}
+              type="range" />
           </Form.Group>
-          <Form.Check checked type="switch"  id="music-switch" label="Music" />
+          <Form.Check defaultChecked={false}
+            onChange={(event) => onPlayMusic(event.currentTarget.checked)}
+            type="switch"
+            id="music-switch"
+            label="Music" />
           <Form.Group>
             <Form.Label>Volume of sounds</Form.Label>
-            <Form.Control defaultValue="50" type="range" />
+            <Form.Control defaultValue={50}
+              onChange={(event) => onChangeVolumeSounds(+event.currentTarget.value)}
+              type="range" />
           </Form.Group>
-          <Form.Check checked type="switch" id="sounds-switch" label="Sounds" />
+          <Form.Check defaultChecked={true}
+            onChange={(event) => onPlaySounds(event.currentTarget.checked)}
+            type="switch"
+            id="sounds-switch"
+            label="Sounds" />
         </div>
         <div className="game-setting__overlay" onClick={this._handleChangeVisible}></div>
         <span className="game-setting__button-show" onClick={this._handleChangeVisible}>{SETTING}</span>
