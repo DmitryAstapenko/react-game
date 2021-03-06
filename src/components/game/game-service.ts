@@ -1,7 +1,7 @@
 import { ICell, ModeCell, ICoordinates, ValueCell, BOMB } from '../cell/cell-service';
 import { AppService } from '../../app-service';
 
-export enum GameMode {  
+export enum GameMode {
   Play = 'PLAY',
   Pause = 'PAUSE',
   End = 'END',
@@ -13,6 +13,8 @@ export enum GameResult {
   Failure = 'FAILURE',
 }
 
+export const NULL_TIME = new Date(0).getTime();
+
 export interface IGameService {
   _fieldWidth: number;
   _fieldHeight: number;
@@ -23,7 +25,7 @@ export interface IGameService {
   _mode: GameMode;
   _result: GameResult;
   _startTime: number;
-  _endTime: number;
+  _timeGame: number;
 }
 
 export const PLAY = '►';
@@ -38,8 +40,8 @@ export class GameService {
   private _mode: GameMode;
   private _result: GameResult;
   private _startTime: number;
-  private _endTime: number;  
-  
+  private _timeGame: number;
+
   constructor(width: number, height: number, countBombs: number, saveObject?: IGameService) {
     if (saveObject) {
       this._fieldWidth = saveObject._fieldWidth;
@@ -51,7 +53,7 @@ export class GameService {
       this._mode = saveObject._mode;
       this._result = saveObject._result;
       this._startTime = saveObject._startTime;
-      this._endTime = saveObject._endTime;      
+      this._timeGame = saveObject._timeGame;
     } else {
       this._fieldWidth =  width;
       this._fieldHeight = height;
@@ -60,10 +62,10 @@ export class GameService {
       this._cells = GameService._createEmptyCells(width, height);
       this._bombCoordinates = GameService._getCoordinatesBombs(width, height, countBombs);
       this._mode = GameMode.Pause;
-      this._result = GameResult.Undefined;    
-      this._startTime = 0;
-      this._endTime = 0;  
-    }    
+      this._result = GameResult.Undefined;
+      this._startTime = NULL_TIME;
+      this._timeGame = NULL_TIME;
+    }
 
     this._setBombsOnField();
     this._placeNumbersOnField();
@@ -101,8 +103,12 @@ export class GameService {
     return this._startTime;
   }
 
-  public get endTime(): number {
-    return this._endTime;
+  public get timeGame(): number {
+    return this._timeGame;
+  }
+
+  public setTimeGame(value: number) {
+    this._timeGame = value;
   }
 
   public checkCell(coordinates: ICoordinates) {
@@ -112,19 +118,21 @@ export class GameService {
     if (cell.mode === ModeCell.Mark) return;
 
     if (cell.value === BOMB) {
-      this._openCellsWithBombs();      
+      this._openCellsWithBombs();
       this._endGame(GameResult.Failure);
     } else if(cell.value === 0) {
       this._openEmptyCells(coordinates);
     } else {
-      this._openCell(coordinates);      
-    }    
+      this._openCell(coordinates);
+    }
 
     if (this._mode === GameMode.Play && this._checkGame()) this._endGame(GameResult.Success);
   }
 
   public markCell(coordinates: ICoordinates) {
-    const cell = this._cells[coordinates.y][coordinates.x];    
+    if (this._mode === GameMode.Pause) this._startGame();
+
+    const cell = this._cells[coordinates.y][coordinates.x];
 
     if (cell.mode !== ModeCell.Open) {
       if (cell.mode === ModeCell.Close && this._countBombs - this._countFlags > 0) {
@@ -137,25 +145,29 @@ export class GameService {
     }
   }
 
-  public repeatGame() {   
-    this._countFlags = 0;    
+  public repeatGame() {
+    this._countFlags = 0;
     this._mode = GameMode.Pause;
-    this._result = GameResult.Undefined;    
+    this._result = GameResult.Undefined;
     this._startTime = 0;
-    this._endTime = 0;
+    this._timeGame = 0;
 
     this._cells.forEach((row) => row.forEach((cell) => cell.mode = ModeCell.Close));
-  }  
+  }
+
+  public pauseGame() {
+    this._mode = GameMode.Pause;
+  }
 
   private _startGame() {
     this._mode = GameMode.Play;
-    this._startTime = Date.now();
+    this._startTime = Date.now() - this._timeGame;
   }
 
   private _endGame(result: GameResult) {
     this._mode = GameMode.End;
     this._result = result;
-    this._endTime = Date.now();
+    this._startTime = 0;
   }
 
   private _checkGame(): boolean {
@@ -163,8 +175,8 @@ export class GameService {
       for (let j = 0; j < this._cells[i].length; j++) {
         const cell = this._cells[i][j];
 
-        if ((cell.mode === ModeCell.Mark 
-          || cell.mode === ModeCell.Close) 
+        if ((cell.mode === ModeCell.Mark
+          || cell.mode === ModeCell.Close)
           && cell.value !== BOMB) return false;
       }
     }
@@ -284,5 +296,5 @@ export class GameService {
     }
 
     return _bombCoordinates;
-  }  
+  }
 }
