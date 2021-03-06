@@ -42,7 +42,7 @@
   padding: 5rem 1rem 1rem 1rem;
   display: grid;
   grid-template-columns: auto;  
-  grid-template-rows: repeat(10, min-content);  
+  grid-template-rows: repeat(15, min-content);  
   grid-gap: 0.5rem;
   width: 20rem;
   height: 100%;      
@@ -52,8 +52,15 @@
 }
 
 .game-setting__container .input-group-text,
-.game-setting__container .btn {
+.game-setting__container .btn,
+.game-setting__container .form-label,
+.game-setting__container .custom-control-label {
+  font-size: 14px;
   font-weight: 600;
+}
+
+.game-setting__container .form-group {
+  margin: 0;
 }
 
 .game__button-play {

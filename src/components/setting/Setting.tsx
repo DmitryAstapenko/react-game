@@ -108,6 +108,16 @@ export default class Setting extends React.Component<ISettingProps, ISettingStat
           </InputGroup>
           <br/>
           <h5>App Settings</h5>
+          <Form.Group>
+            <Form.Label>Music volume</Form.Label>
+            <Form.Control defaultValue="50" type="range" />
+          </Form.Group>
+          <Form.Check checked type="switch"  id="music-switch" label="Music" />
+          <Form.Group>
+            <Form.Label>Volume of sounds</Form.Label>
+            <Form.Control defaultValue="50" type="range" />
+          </Form.Group>
+          <Form.Check checked type="switch" id="sounds-switch" label="Sounds" />
         </div>
         <div className="game-setting__overlay" onClick={this._handleChangeVisible}></div>
         <span className="game-setting__button-show" onClick={this._handleChangeVisible}>{SETTING}</span>
