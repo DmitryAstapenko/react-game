@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GameService, GameResult } from './game-service';
+import { GameService, GameResult, IGameService } from './game-service';
 import { ICoordinates } from '../cell/cell-service';
 import BombField from '../bomb-field/BombField';
 import Counter from '../counter/Counter';
@@ -19,14 +19,21 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   constructor(props: IGameProps) {
     super(props);
 
+    const saveGame = Game._getSaveLocalStorage();
+    const game = saveGame._cells 
+      ? new GameService(0, 0, 0, saveGame)
+      : new GameService(10, 10, 10);
+
     this.state = {
-      game: new GameService(10, 10, 10)
-    }
+      game: game
+    }      
+    
+    window.addEventListener('unload', () => Game._saveGameLocalStorage(this.state.game));        
 
     this._handleClickCell = this._handleClickCell.bind(this);
     this._handleClickSmile = this._handleClickSmile.bind(this);
     this._handleClickPlay = this._handleClickPlay.bind(this);
-  }
+  }  
 
   private _handleClickCell(event: MouseEvent, coordinates: ICoordinates) {
     event.preventDefault();
@@ -47,8 +54,18 @@ export default class Game extends React.Component<IGameProps, IGameState> {
 
   private _handleClickPlay(width: number, height: number, bomb: number) {
     const newGame = new GameService(width, height, bomb);
-
     this.setState({game: newGame});
+  }
+
+  private static _saveGameLocalStorage(game: GameService) {
+    const save = JSON.stringify(game);
+    localStorage.setItem('SaveGameSapper', save);
+  }
+
+  private static _getSaveLocalStorage(): IGameService {
+    const save = localStorage.getItem('SaveGameSapper') ?? '{}';
+
+    return JSON.parse(save);
   }
 
   public render() {

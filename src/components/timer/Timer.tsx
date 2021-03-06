@@ -25,6 +25,10 @@ export default class Timer extends React.Component<ITimerProps, ITimerState> {
     }
   }  
 
+  componentDidMount() {
+    
+  }
+
   componentWillReceiveProps(nextProps: ITimerProps) {    
     if (!nextProps.startTimer) this.setState({ time: 0 });
   }  

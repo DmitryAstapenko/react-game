@@ -13,6 +13,19 @@ export enum GameResult {
   Failure = 'FAILURE',
 }
 
+export interface IGameService {
+  _fieldWidth: number;
+  _fieldHeight: number;
+  _countBombs: number;
+  _countFlags: number;
+  _cells: ICell[][];
+  _bombCoordinates: ICoordinates[];
+  _mode: GameMode;
+  _result: GameResult;
+  _startTime: number;
+  _endTime: number;
+}
+
 export const PLAY = '►';
 
 export class GameService {
@@ -25,19 +38,32 @@ export class GameService {
   private _mode: GameMode;
   private _result: GameResult;
   private _startTime: number;
-  private _endTime: number;
-
-  constructor(width: number, height: number, _countBombs: number) {
-    this._fieldWidth = width;
-    this._fieldHeight = height;
-    this._countBombs = _countBombs;
-    this._countFlags = 0;
-    this._cells = GameService._createEmptyCells(width, height);
-    this._bombCoordinates = GameService._getCoordinatesBombs(width, height, _countBombs);
-    this._mode = GameMode.Pause;
-    this._result = GameResult.Undefined;    
-    this._startTime = 0;
-    this._endTime = 0;
+  private _endTime: number;  
+  
+  constructor(width: number, height: number, countBombs: number, saveObject?: IGameService) {
+    if (saveObject) {
+      this._fieldWidth = saveObject._fieldWidth;
+      this._fieldHeight = saveObject._fieldHeight;
+      this._countBombs = saveObject._countBombs;
+      this._countFlags = saveObject._countFlags;
+      this._cells = saveObject._cells;
+      this._bombCoordinates = saveObject._bombCoordinates;
+      this._mode = saveObject._mode;
+      this._result = saveObject._result;
+      this._startTime = saveObject._startTime;
+      this._endTime = saveObject._endTime;      
+    } else {
+      this._fieldWidth =  width;
+      this._fieldHeight = height;
+      this._countBombs = countBombs;
+      this._countFlags = 0;
+      this._cells = GameService._createEmptyCells(width, height);
+      this._bombCoordinates = GameService._getCoordinatesBombs(width, height, countBombs);
+      this._mode = GameMode.Pause;
+      this._result = GameResult.Undefined;    
+      this._startTime = 0;
+      this._endTime = 0;  
+    }    
 
     this._setBombsOnField();
     this._placeNumbersOnField();
@@ -119,7 +145,7 @@ export class GameService {
     this._endTime = 0;
 
     this._cells.forEach((row) => row.forEach((cell) => cell.mode = ModeCell.Close));
-  }
+  }  
 
   private _startGame() {
     this._mode = GameMode.Play;
@@ -258,5 +284,5 @@ export class GameService {
     }
 
     return _bombCoordinates;
-  }
+  }  
 }
