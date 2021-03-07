@@ -20,7 +20,7 @@
 .game-setting__button-show {
   position: fixed;
   top: 1rem;
-  left: 1rem;
+  left: 2rem;
   font-size: 2rem;  
   font-weight: 900;
   transition: all 0.25s ease;  
@@ -66,7 +66,7 @@
 .game__button-play {
   position: fixed;
   top: 1rem;
-  left: 3rem;
+  left: 4rem;
   font-size: 2rem;  
   font-weight: 900;
   transition: all 0.25s ease;  

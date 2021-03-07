@@ -28,6 +28,15 @@ export interface IGameService {
   _timeGame: number;
 }
 
+export interface IGameResult {
+  _fieldWidth: number;
+  _fieldHeight: number;
+  _countBombs: number;  
+  _result: GameResult;
+  _startTime: number;
+  _timeGame: number;
+}
+
 export const PLAY = '►';
 
 export class GameService {
@@ -167,6 +176,16 @@ export class GameService {
   private _endGame(result: GameResult) {
     this._mode = GameMode.End;
     this._result = result;
+
+    GameService._saveGameResult({
+      _fieldWidth: this._fieldWidth,
+      _fieldHeight: this._fieldHeight,
+      _countBombs: this._countBombs,
+      _result: this._result,
+      _startTime: this._startTime,
+      _timeGame: this._timeGame
+    });
+    
     this._startTime = 0;
   }
 
@@ -254,6 +273,12 @@ export class GameService {
        neighboringCells.push(this._cells[coordinates.y - 1][coordinates.x - 1]);
 
     return neighboringCells;
+  }
+
+  private static _saveGameResult(game: IGameResult) {        
+    let save: IGameResult[] = JSON.parse(localStorage.getItem('SapperGameResult') ?? '[]');   
+    save.push(game);
+    localStorage.setItem('SapperGameResult', JSON.stringify(save));      
   }
 
   private static _createEmptyCells(width: number, height: number): ICell[][] {

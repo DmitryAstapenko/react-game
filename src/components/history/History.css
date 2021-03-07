@@ -1,13 +1,13 @@
 .game-history {
-  position: fixed; 
-  display: flex; 
+  position: fixed;
+  padding: 4rem 1rem 2rem 1rem;
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;  
-  transition: all 0.25s ease;      
-  overflow: auto;
-  background-color: #ccc;  
+  height: 100%;
+  transition: all 0.25s ease;
+  background-color: #ccc;
 }
 
 .game-history[data-visible='SHOW'] {
@@ -25,14 +25,26 @@
 .game-history__button {
   position: fixed;
   top: 1rem;
-  right: 1rem;
-  font-size: 2rem;  
+  right: 2rem;
+  font-size: 2rem;
   font-weight: 900;
-  transition: all 0.25s ease;    
+  transition: all 0.25s ease;
   z-index: 10;
 }
 
 .game-history__button:hover {
   cursor: pointer;
   transform: scale(1.2);
+}
+
+.game-history th {
+  font-weight: 900;
+}
+
+.game-history table {
+  margin: 0;
+  display: block;  
+  width: max-content;
+  max-height: 100%;
+  overflow: auto;
 }
