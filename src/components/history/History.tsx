@@ -4,6 +4,8 @@ import { IGameResult } from '../game/game-service';
 import './History.css';
 import { Table } from 'react-bootstrap';
 
+const KeyboardEventHandler = require('react-keyboard-event-handler');
+
 export interface IHistoryProps {
 }
 
@@ -41,6 +43,9 @@ export default class History extends React.Component<IHistoryProps, IHistoryStat
 
     return (
       <div className="game-history" data-visible={visible}>
+        <KeyboardEventHandler
+            handleKeys={['h']}
+            onKeyEvent={(key: any, event: KeyboardEvent) => this._handleChangeVisible()} />
         <Table striped bordered hover variant="dark">
           <thead>
             <tr>

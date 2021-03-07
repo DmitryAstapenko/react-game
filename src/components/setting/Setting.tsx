@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Button, ButtonGroup, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { Badge, Button, ButtonGroup, Form, FormControl, InputGroup } from 'react-bootstrap';
 import { PLAY } from '../game/game-service';
 import { DisplayMode, SETTING } from './setting-service';
 import './Setting.css';
+
+const KeyboardEventHandler = require('react-keyboard-event-handler');
 
 export interface ISettingProps {
   onClickPlay: Function,
@@ -79,6 +81,12 @@ export default class Setting extends React.Component<ISettingProps, ISettingStat
 
     return (
       <div className="game-setting" data-visible={visible}>
+        <KeyboardEventHandler
+            handleKeys={['s']}
+            onKeyEvent={(key: any, event: KeyboardEvent) => this._handleChangeVisible()} />
+        <KeyboardEventHandler
+            handleKeys={['p']}
+            onKeyEvent={(key: any, event: KeyboardEvent) => onClickPlay(width, height, bombs)} />            
         <div className="game-setting__container">
           <h5>Game Settings</h5>
           <ButtonGroup aria-label="Basic example" size="sm">
@@ -134,6 +142,14 @@ export default class Setting extends React.Component<ISettingProps, ISettingStat
             type="switch"
             id="sounds-switch"
             label="Sounds" />
+          <br/>  
+          <h5>Hot keys</h5>
+          <h6><Badge variant="secondary">P</Badge> - start new game</h6>  
+          <h6><Badge variant="secondary">R</Badge> - repeat the current game</h6>  
+          <h6><Badge variant="secondary">S</Badge> - open settings</h6>  
+          <h6><Badge variant="secondary">H</Badge> - view game history</h6>  
+          <h6><Badge variant="secondary">W</Badge> - see the table of records</h6> 
+          <br/> 
         </div>
         <div className="game-setting__overlay" onClick={this._handleChangeVisible}></div>
         <span className="game-setting__button-show" onClick={this._handleChangeVisible}>{SETTING}</span>

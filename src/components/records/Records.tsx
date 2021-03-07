@@ -4,6 +4,8 @@ import { GameResult, IGameResult } from '../game/game-service';
 import { DisplayMode } from '../setting/setting-service';
 import './Records.css';
 
+const KeyboardEventHandler = require('react-keyboard-event-handler');
+
 export interface IRecordsProps {
 }
 
@@ -46,6 +48,9 @@ export default class Records extends React.Component<IRecordsProps, IRecordsStat
 
     return (
       <div className="game-records" data-visible={visible}>
+        <KeyboardEventHandler
+            handleKeys={['w']}
+            onKeyEvent={(key: any, event: KeyboardEvent) => this._handleChangeVisible()} />
         <Table striped bordered hover variant="dark">
           <thead>
             <tr>

@@ -11,6 +11,8 @@ import History from '../history/History';
 import Records from '../records/Records';
 import './Game.css';
 
+const KeyboardEventHandler = require('react-keyboard-event-handler');
+
 export interface IGameProps {
 }
 
@@ -153,6 +155,9 @@ export default class Game extends React.Component<IGameProps, IGameState> {
 
     return (
       <div className="game">
+        <KeyboardEventHandler
+            handleKeys={['r']}
+            onKeyEvent={(key: any, event: KeyboardEvent) => this._handleClickSmile()} />
         <Setting onClickPlay={this._handleClickPlay}
           onChangeVolumeSounds={this._handleChangeVolumeSounds}
           onChangeVolumeMusic={this._handleChangeVolumeMusic}
@@ -179,7 +184,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
             cells={cells}
             mode={mode}
             onClickCell={this._handleClickCell}
-          />
+          />          
         </div>
       </div>
     );

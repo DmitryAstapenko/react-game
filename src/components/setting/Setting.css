@@ -1,5 +1,5 @@
 .game-setting {
-  position: fixed; 
+  position: fixed;   
   display: flex; 
   width: 100%;
   height: 100%;  
@@ -38,17 +38,18 @@
   background-color: rgba(204, 204, 204, 0.5);    
 }
 
-.game-setting__container {  
-  padding: 5rem 1rem 1rem 1rem;
+.game-setting__container {    
+  padding: 4rem 4rem 1rem 4rem;
   display: grid;
   grid-template-columns: auto;  
-  grid-template-rows: repeat(15, min-content);  
+  grid-template-rows: repeat(18, min-content);  
   grid-gap: 0.5rem;
-  width: 20rem;
+  width: max-content;
   height: 100%;      
   background-color: #ccc;  
   border-right: 1px solid rgba(255, 255, 255, 0.5);
   z-index: 20;
+  overflow: auto;
 }
 
 .game-setting__container .input-group-text,
@@ -60,6 +61,10 @@
 }
 
 .game-setting__container .form-group {
+  margin: 0;
+}
+
+.game-setting__container h6 {
   margin: 0;
 }
 
