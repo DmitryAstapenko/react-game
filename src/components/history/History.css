@@ -1,0 +1,36 @@
+.game-history {
+  position: fixed; 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;  
+  transition: all 0.25s ease;      
+  overflow: auto;
+  background-color: #ccc;
+  z-index: 20;  
+}
+
+.game-history[data-visible='SHOW'] {
+  top: 0;
+  right: 0;
+}
+
+.game-history[data-visible='HIDE'] {
+  top: 0;
+  right: -100%;
+}
+
+.game-history__button {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;  
+  font-weight: 900;
+  transition: all 0.25s ease;    
+}
+
+.game-history__button:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
