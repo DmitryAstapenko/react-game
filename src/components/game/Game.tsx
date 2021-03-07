@@ -103,8 +103,6 @@ export default class Game extends React.Component<IGameProps, IGameState> {
   }
 
   private _handleChangeVolumeMusic(volume: number) {
-    console.log(volume);
-    console.log(this._audioBack);
     this._audioBack.volume(volume / 100);
   }
 
@@ -184,7 +182,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
             cells={cells}
             mode={mode}
             onClickCell={this._handleClickCell}
-          />          
+          />
         </div>
       </div>
     );
