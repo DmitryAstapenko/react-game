@@ -8,6 +8,7 @@ import Smile from '../smile/Smile';
 import Timer from '../timer/Timer';
 import Setting from '../setting/Setting';
 import History from '../history/History';
+import Records from '../records/Records';
 import './Game.css';
 
 export interface IGameProps {
@@ -159,6 +160,7 @@ export default class Game extends React.Component<IGameProps, IGameState> {
           onPlaySounds={this._handlePlaySounds}
         ></Setting>
         <History />
+        <Records />
         <div className="game__container">
           <div className="game__header">
             <Counter countMarkCells={countMarkCells} />
